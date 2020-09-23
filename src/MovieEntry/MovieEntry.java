@@ -422,7 +422,6 @@ public class MovieEntry extends javax.swing.JFrame {
                 columnData[10] = rs.getString("movieLength");
                 model.addRow(columnData);
             }
-            rs.close();
         }
         catch (Exception e)
         {
@@ -496,12 +495,10 @@ public class MovieEntry extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnUpdateActionPerformed
 
     private void jbtnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteActionPerformed
-       conn = MovieEntry.ConnectDB();
+
         DefaultTableModel iModel = (DefaultTableModel) jTable1.getModel();
-        
-        String sql = "DELETE FROM dataform WHERE id = ?";
-                 
-              
+                
+              String sql = "DELETE FROM dataform WHERE id = ?";
         if (jTable1.getSelectedRow() == -1) {
             if(jTable1.getRowCount()==0) {
                          
@@ -511,7 +508,22 @@ public class MovieEntry extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Select a row to delete", 
                         "Movie Entry", JOptionPane.OK_OPTION);
             }
-            }else{                                                             
+            }else{   
+            try {           
+                int row = jTable1.getSelectedRow();
+                String value = jTable1.getModel().getValueAt(row, 0).toString();              
+                int id = Integer.parseInt(value);
+                
+                pst = conn.prepareStatement(sql);               
+                pst.setInt(1, id);
+                
+               pst.executeUpdate();
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            
+            
                   model.removeRow(jTable1.getSelectedRow());                                  
                }
     }//GEN-LAST:event_jbtnDeleteActionPerformed
