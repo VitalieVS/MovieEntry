@@ -5,14 +5,13 @@
  */
 package MovieEntry;
 
+import java.awt.HeadlessException;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.text.MessageFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -83,17 +82,18 @@ public class MovieEntry extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         movie_year_restrict = new javax.swing.JTextField();
         movie_description = new javax.swing.JTextField();
-        movie_length = new javax.swing.JComboBox<>();
-        movie_type = new javax.swing.JComboBox<>();
+        movie_length = new javax.swing.JComboBox<String>();
+        movie_type = new javax.swing.JComboBox<String>();
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Movie Entry");
         setBackground(new java.awt.Color(51, 51, 51));
-        setPreferredSize(new java.awt.Dimension(1460, 800));
+        setPreferredSize(new java.awt.Dimension(1350, 800));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(2));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jbtnReset.setBackground(new java.awt.Color(51, 51, 51));
@@ -162,10 +162,9 @@ public class MovieEntry extends javax.swing.JFrame {
         });
         jPanel1.add(jbtnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 10, 180, 40));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 1430, 60));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 1330, 60));
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(2));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -190,12 +189,11 @@ public class MovieEntry extends javax.swing.JFrame {
         jTable1.setSelectionBackground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 27, 1400, 420));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 27, 1310, 420));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 1430, 460));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 1330, 460));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(2));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -300,7 +298,7 @@ public class MovieEntry extends javax.swing.JFrame {
 
         movie_length.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         movie_length.setForeground(new java.awt.Color(255, 255, 255));
-        movie_length.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select length", "<30 min", "~1 hour", ">1 hour" }));
+        movie_length.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select length", "<30 min", "~1 hour", ">1 hour" }));
         movie_length.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 movie_lengthActionPerformed(evt);
@@ -310,7 +308,7 @@ public class MovieEntry extends javax.swing.JFrame {
 
         movie_type.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         movie_type.setForeground(new java.awt.Color(255, 255, 255));
-        movie_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select movie type", "Free", "Paid" }));
+        movie_type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select movie type", "Free", "Paid" }));
         movie_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 movie_typeActionPerformed(evt);
@@ -324,7 +322,7 @@ public class MovieEntry extends javax.swing.JFrame {
         jLabel11.setText("Year restrict");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 30, -1, -1));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1430, 240));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1330, 240));
 
         pack();
         setLocationRelativeTo(null);
@@ -358,7 +356,7 @@ public class MovieEntry extends javax.swing.JFrame {
             pst.close();
 
         }
-        catch (Exception e)
+        catch (SQLException | HeadlessException e)
         {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -387,7 +385,7 @@ public class MovieEntry extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:dataform.db"); //connect to database
             return conn;
         }
-        catch (Exception e)
+        catch (ClassNotFoundException | SQLException e)
         {
             JOptionPane.showMessageDialog(null, e);
        return null;
@@ -512,18 +510,16 @@ public class MovieEntry extends javax.swing.JFrame {
             try {           
                 int row = jTable1.getSelectedRow();
                 String value = jTable1.getModel().getValueAt(row, 0).toString();              
-                int id = Integer.parseInt(value);
+                String id = value;           
                 
                 pst = conn.prepareStatement(sql);               
-                pst.setInt(1, id);
+                pst.setString(1, id);
                 
                pst.executeUpdate();
             }
-            catch (Exception e){
+            catch (NumberFormatException | SQLException e){
                 System.out.println(e.getMessage());
-            }
-            
-            
+            }                   
                   model.removeRow(jTable1.getSelectedRow());                                  
                }
     }//GEN-LAST:event_jbtnDeleteActionPerformed
@@ -560,10 +556,8 @@ public class MovieEntry extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MovieEntry().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MovieEntry().setVisible(true);
         });
     }
 
